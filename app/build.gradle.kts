@@ -16,6 +16,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jboss.weld.se:weld-se-shaded:6.0.0.Final")
+
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
 

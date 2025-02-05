@@ -3,12 +3,43 @@
  */
 package org.example;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        WeldContainer container = new Weld()
+            .disableDiscovery()
+            .addBeanClass(Entry.class)
+            .addBeanClass(Dog.class)
+            .initialize();
+
+        container.select(Entry.class).get().perform();
+        container.shutdown();
     }
+
+    @ApplicationScoped
+    private static class Entry {
+        private final Dog dog;
+
+        @Inject
+        public Entry(Dog dog) {
+            this.dog = dog;
+        }
+
+        public void perform() {
+            dog.bark();
+        }
+    }
+
+    @ApplicationScoped
+    public static class Dog {
+        public void bark() {
+            System.out.println("Woff");
+        }
+    }
+
 }
