@@ -16,7 +16,16 @@ repositories {
 }
 
 dependencies {
+    // Weld
     implementation("org.jboss.weld.se:weld-se-shaded:6.0.0.Final")
+
+    // Vert.x
+    implementation("io.vertx:vertx-core:4.5.12")
+
+    // RESTEasy
+    implementation("org.jboss.resteasy:resteasy-vertx:6.2.11.Final")
+//    implementation(platform("org.jboss.resteasy.microprofile:resteasy-microprofile-bom:3.0.1.Final"))
+//    implementation("org.jboss.resteasy.microprofile:")
 
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)

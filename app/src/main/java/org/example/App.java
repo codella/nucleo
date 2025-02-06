@@ -3,8 +3,12 @@
  */
 package org.example;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.http.HttpServerResponse;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import org.jboss.resteasy.plugins.server.vertx.VertxResteasyDeployment;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 
@@ -13,33 +17,26 @@ public class App {
     public static void main(String[] args) {
         WeldContainer container = new Weld()
             .disableDiscovery()
-            .addBeanClass(Entry.class)
-            .addBeanClass(Dog.class)
             .initialize();
 
-        container.select(Entry.class).get().perform();
+//        container.select(Entry.class).get().perform();
         container.shutdown();
+
+        VertxResteasyDeployment deployment = new VertxResteasyDeployment();
+        deployment.getRegistry().addPerInstanceResource(Resource.class);
     }
 
-    @ApplicationScoped
-    private static class Entry {
-        private final Dog dog;
-
-        @Inject
-        public Entry(Dog dog) {
-            this.dog = dog;
-        }
-
-        public void perform() {
-            dog.bark();
-        }
-    }
-
-    @ApplicationScoped
-    public static class Dog {
-        public void bark() {
-            System.out.println("Woff");
+    public class Resource {
+        @GET
+        @Path("/somepath")
+//        @Produces("text/plain")
+        public String context(
+            @Context Context context,
+            @Context Vertx vertx,
+            @Context HttpServerRequest req,
+            @Context HttpServerResponse resp
+        ) {
+            return "the-response";
         }
     }
-
 }
