@@ -28,3 +28,7 @@ replay_pid*
 
 # Ignore Gradle build output directory
 build
+
+# Ignore IntelliJ Idea project
+
+.idea/
