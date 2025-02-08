@@ -1,4 +1,4 @@
-package dk.codella.nucleo.qualifier;
+package dk.codella.nucleo;
 
 public interface HttpRoutesProvider extends Runnable {
 }

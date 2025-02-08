@@ -1,14 +1,12 @@
 package dk.codella.nucleo;
 
 import com.google.common.collect.Sets;
-import dk.codella.nucleo.qualifier.HttpRoutesProvider;
 import io.vertx.core.Vertx;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Supplier;
 
 public class Nucleo {
   private final Weld weld;
