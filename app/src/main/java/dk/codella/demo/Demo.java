@@ -2,8 +2,6 @@ package dk.codella.demo;
 
 import dk.codella.nucleo.Nucleo;
 
-import java.util.Set;
-
 public class Demo {
 
     public static void main(String[] args) {
