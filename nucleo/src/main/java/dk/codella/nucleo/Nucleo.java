@@ -1,5 +1,7 @@
 package dk.codella.nucleo;
 
+import com.google.common.collect.Sets;
+import dk.codella.nucleo.qualifier.HttpRoutesProvider;
 import io.vertx.core.Vertx;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
@@ -10,7 +12,6 @@ import java.util.function.Supplier;
 
 public class Nucleo {
   private final Weld weld;
-  private WeldContainer container;
 
   // BEGIN -- Builder properties
   private final Set<Class<?>> beansToAdd = new HashSet<>();
@@ -23,8 +24,8 @@ public class Nucleo {
     this.weld.addBeanClass(VertxSupport.class);
   }
 
-  public Nucleo withBeanClasses(Supplier<Set<Class<?>>> callback) {
-    beansToAdd.addAll(callback.get());
+  public Nucleo withBeanClasses(Class<?> ...classes) {
+    beansToAdd.addAll(Sets.newHashSet(classes));
     return this;
   }
 
@@ -35,11 +36,22 @@ public class Nucleo {
 
   public void start() {
     weld.addBeanClasses(beansToAdd.toArray(new Class<?>[0]));
-    container = weld.initialize();
 
     if (withHttpServer) {
-      Vertx vertx = container.select(Vertx.class).get();
-      vertx.deployVerticle(HttpVerticle.class);
+      weld.addBeanClass(HttpVerticle.class);
+    }
+
+    WeldContainer container = weld.initialize();
+
+    Vertx vertx = container.select(Vertx.class).get();
+
+    if (withHttpServer) {
+      for (var provider : container.select(HttpRoutesProvider.class)) {
+        provider.run();
+      }
+
+      var httpVerticle = container.select(HttpVerticle.class).get();
+      vertx.deployVerticle(httpVerticle);
     }
   }
 

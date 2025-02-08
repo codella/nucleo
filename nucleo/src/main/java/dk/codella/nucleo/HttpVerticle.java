@@ -3,19 +3,22 @@ package dk.codella.nucleo;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
+import io.vertx.ext.web.Router;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class HttpVerticle extends AbstractVerticle {
-  private HttpServer server;
+  private final Router router;
+
+  @Inject
+  public HttpVerticle(Router router) {
+    this.router = router;
+  }
 
   @Override
-  public void start(Promise<Void> startPromise) throws Exception {
-    server = vertx.createHttpServer().requestHandler(req -> {
-      req.response()
-          .putHeader("content-type", "text/plain")
-          .end("Hello from Vert.x!");
-    });
+  public void start(Promise<Void> startPromise) {
+    HttpServer server = vertx.createHttpServer().requestHandler(router);
 
     // Now bind the server:
     server.listen(8080)

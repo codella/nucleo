@@ -8,6 +8,9 @@ repositories {
 }
 
 dependencies {
+    //Guava
+    implementation(libs.guava)
+
     // Lombok
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
@@ -16,7 +19,8 @@ dependencies {
     api(libs.weld)
 
     // Vert.x
-    api(libs.vertx)
+    api(libs.vertx.core)
+    api(libs.vertx.web)
 
     // RESTEasy
 //    implementation("org.jboss.resteasy:resteasy-vertx:6.2.11.Final")
