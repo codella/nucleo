@@ -8,7 +8,7 @@ public class Demo {
         System.out.println("PID: " + ProcessHandle.current().pid());
 
         new Nucleo()
-            .withBeanClasses(DemoRoutes.class)
+            .withBeanClasses(DemoRoutes.class, DemoResteasyResource.class)
             .withHttpServer()
             .start();
     }

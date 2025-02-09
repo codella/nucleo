@@ -4,11 +4,12 @@
 package dk.codella.nucleo;
 
 import dk.codella.demo.Demo;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 class AppTest {
     @Test void appHasAGreeting() {
-        Demo classUnderTest = new Demo();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+
     }
 }

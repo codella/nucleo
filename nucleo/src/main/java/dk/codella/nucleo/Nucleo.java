@@ -40,14 +40,9 @@ public class Nucleo {
     }
 
     WeldContainer container = weld.initialize();
-
     Vertx vertx = container.select(Vertx.class).get();
 
     if (withHttpServer) {
-      for (var provider : container.select(HttpRoutesProvider.class)) {
-        provider.run();
-      }
-
       var httpVerticle = container.select(HttpVerticle.class).get();
       vertx.deployVerticle(httpVerticle);
     }

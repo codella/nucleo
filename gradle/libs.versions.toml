@@ -3,6 +3,7 @@ guava = "33.3.1-jre"
 lombok = "1.18.36"
 weld = "6.0.0.Final"
 vertx = "4.5.12"
+resteasy = "6.2.11.Final"
 junit-jupiter = "5.11.1"
 
 [libraries]
@@ -11,5 +12,8 @@ lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 weld = { module = "org.jboss.weld.se:weld-se-shaded", version.ref = "weld" }
 vertx-core = { module = "io.vertx:vertx-core", version.ref = "vertx" }
 vertx-web = { module = "io.vertx:vertx-web", version.ref = "vertx" }
+resteasy-bom = { module = "org.jboss.resteasy:resteasy-bom", version.ref = "resteasy" }
+resteasy-core = { module = "org.jboss.resteasy:resteasy-core" }
+resteasy-vertx = { module = "org.jboss.resteasy:resteasy-vertx" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }

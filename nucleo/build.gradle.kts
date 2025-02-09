@@ -8,6 +8,10 @@ repositories {
 }
 
 dependencies {
+    /*********************************************************************************
+     * Main
+     */
+
     //Guava
     implementation(libs.guava)
 
@@ -23,11 +27,12 @@ dependencies {
     api(libs.vertx.web)
 
     // RESTEasy
-//    implementation("org.jboss.resteasy:resteasy-vertx:6.2.11.Final")
 //    implementation(platform("org.jboss.resteasy.microprofile:resteasy-microprofile-bom:3.0.1.Final"))
-//    implementation("org.jboss.resteasy.microprofile:")
+    api(platform(libs.resteasy.bom))
+    api(libs.resteasy.core)
+    api(libs.resteasy.vertx)
 
-    /*
+    /*********************************************************************************
      * Test
      */
     // Lombok
