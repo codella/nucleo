@@ -13,7 +13,8 @@ public class Nucleo {
 
   // BEGIN -- Builder properties
   private final Set<Class<?>> beansToAdd = new HashSet<>();
-  private boolean withHttpServer = false;
+  private boolean withRoutesHttpServer = false;
+  private boolean withResteasyHttpServer = false;
   // END -- Builder properties
 
   public Nucleo() {
@@ -27,24 +28,38 @@ public class Nucleo {
     return this;
   }
 
-  public Nucleo withHttpServer() {
-    withHttpServer = true;
+  public Nucleo withRoutesHttpServer() {
+    withRoutesHttpServer = true;
+    return this;
+  }
+
+  public Nucleo withResteasyHttpServer() {
+    withResteasyHttpServer = true;
     return this;
   }
 
   public void start() {
     weld.addBeanClasses(beansToAdd.toArray(new Class<?>[0]));
 
-    if (withHttpServer) {
-      weld.addBeanClass(HttpVerticle.class);
+    if (withRoutesHttpServer) {
+      weld.addBeanClass(RoutesHttpVerticle.class);
+    }
+
+    if (withResteasyHttpServer) {
+      weld.addBeanClasses(ResteasyHttpVerticle.class);
     }
 
     WeldContainer container = weld.initialize();
     Vertx vertx = container.select(Vertx.class).get();
 
-    if (withHttpServer) {
-      var httpVerticle = container.select(HttpVerticle.class).get();
-      vertx.deployVerticle(httpVerticle);
+    if (withRoutesHttpServer) {
+      var verticle = container.select(RoutesHttpVerticle.class).get();
+      vertx.deployVerticle(verticle);
+    }
+
+    if (withResteasyHttpServer) {
+      var verticle = container.select(ResteasyHttpVerticle.class).get();
+      vertx.deployVerticle(verticle);
     }
   }
 

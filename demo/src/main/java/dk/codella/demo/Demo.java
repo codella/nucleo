@@ -9,16 +9,9 @@ public class Demo {
 
         new Nucleo()
             .withBeanClasses(DemoRoutes.class, DemoResteasyResource.class)
-            .withHttpServer()
+            .withRoutesHttpServer()
+            .withResteasyHttpServer()
             .start();
     }
 
-//    public static class Resource {
-//        @GET
-//        @Path("/somepath")
-//        @Produces("text/plain")
-//        public String context() {
-//            return "the-response";
-//        }
-//    }
 }
