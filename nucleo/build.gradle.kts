@@ -27,9 +27,7 @@ dependencies {
     api(libs.vertx.web)
 
     // RESTEasy
-//    implementation(platform("org.jboss.resteasy.microprofile:resteasy-microprofile-bom:3.0.1.Final"))
     api(platform(libs.resteasy.bom))
-    api(libs.resteasy.core)
     api(libs.resteasy.vertx)
 
     /*********************************************************************************
