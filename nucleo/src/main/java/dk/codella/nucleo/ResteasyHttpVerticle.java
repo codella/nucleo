@@ -4,15 +4,16 @@ import com.google.common.collect.Sets;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.jboss.resteasy.plugins.server.vertx.VertxRequestHandler;
 import org.jboss.resteasy.plugins.server.vertx.VertxResteasyDeployment;
 
 import java.util.Set;
 
-@ApplicationScoped
+// We need @Singleton to make sure exceptions are going to be thrown on bean creation
+@Singleton
 public class ResteasyHttpVerticle extends AbstractVerticle {
   private final Set<ResteasyResource> resteasyResources;
 
@@ -31,12 +32,16 @@ public class ResteasyHttpVerticle extends AbstractVerticle {
     deployment.start();
 
     for (var resource : resteasyResources) {
+      // TODO: check why exceptions thrown by (or because of) resteasy resources seem to be swallowed
       deployment.getRegistry().addSingletonResource(resource);
     }
 
     server.requestHandler(new VertxRequestHandler(vertx, deployment));
 
-    server.listen(8080);
+    server
+        .listen(8080)
+        .<Void>mapEmpty()
+        .onComplete(startPromise);
   }
 
 }
