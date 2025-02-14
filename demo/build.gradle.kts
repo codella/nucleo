@@ -9,10 +9,11 @@ repositories {
 dependencies {
     // Nucleo
     implementation(project(":nucleo"))
+    // Logback
+    implementation(libs.logback)
     // Lombok
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
-
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

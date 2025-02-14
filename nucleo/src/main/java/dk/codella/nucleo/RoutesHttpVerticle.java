@@ -11,7 +11,7 @@ import jakarta.inject.Singleton;
 
 import java.util.Set;
 
-// We need @Singleton to make sure exceptions are going to be thrown on bean creation
+// We need @Singleton to make sure exceptions are going to be visible on bean creation
 @Singleton
 public class RoutesHttpVerticle extends AbstractVerticle {
   private final Router router;

@@ -6,6 +6,7 @@ vertx = "4.5.12"
 resteasy = "6.2.11.Final"
 smallrye-config = "3.11.0"
 flogger = "0.8"
+logback = "1.5.16"
 junit-jupiter = "5.11.1"
 
 [libraries]
@@ -19,5 +20,6 @@ resteasy-vertx = { module = "org.jboss.resteasy:resteasy-vertx" }
 smallrye-config = { module = "io.smallrye.config:smallrye-config", version.ref = "smallrye-config"}
 flogger = { module = "com.google.flogger:flogger", version.ref = "flogger"}
 flogger-system-backend = { module = "com.google.flogger:flogger-system-backend", version.ref = "flogger"}
+logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
