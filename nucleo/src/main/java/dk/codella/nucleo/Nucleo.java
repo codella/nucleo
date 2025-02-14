@@ -54,6 +54,10 @@ public class Nucleo {
     WeldContainer container = weld.initialize();
     Vertx vertx = container.select(Vertx.class).get();
 
+    vertx.exceptionHandler(t -> {
+      log.atSevere().withCause(t).log("BOOM");
+    });
+
     if (withRoutesHttpServer) {
       var verticle = container.select(RoutesHttpVerticle.class).get();
       vertx.deployVerticle(verticle);

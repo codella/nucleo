@@ -12,13 +12,7 @@ public class VertxSupport {
   @Produces
   @Singleton
   public Vertx vertx() {
-    var vertx = Vertx.vertx();
-
-    vertx.exceptionHandler(t -> {
-      log.atSevere().withCause(t).log("BOOM");
-    });
-
-    return vertx;
+    return Vertx.vertx();
   }
 
   @Produces
