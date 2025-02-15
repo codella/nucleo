@@ -19,7 +19,7 @@ public class ResteasyHttpVerticle extends AbstractVerticle {
   @Inject
   public ResteasyHttpVerticle(
       Instance<ResteasyResource> resteasyResources,
-      @ConfigProperty(name = "app.http.resteasy-verticle.port", defaultValue = "8081") int port`
+      @ConfigProperty(name = "app.http.resteasy-verticle.port", defaultValue = "8081") int port
   ) {
     this.port = port;
     this.resteasyResources = Sets.newHashSet(resteasyResources);
