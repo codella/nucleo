@@ -14,8 +14,8 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @Path("/resteasy")
 public class DemoResteasyResource implements ResteasyResource {
 
-  @Inject
-  @ConfigProperty(name = "app.name")
+  //@Inject
+//  @ConfigProperty(name = "app.name")
   public String appName;
 
   @GET

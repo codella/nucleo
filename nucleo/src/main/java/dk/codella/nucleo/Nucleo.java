@@ -23,6 +23,7 @@ public class Nucleo {
   public Nucleo() {
     this.weld = new Weld();
     this.weld.disableDiscovery();
+    log.atInfo().log("Disabled Weld auto discovery");
     this.weld.addBeanClass(VertxSupport.class);
   }
 

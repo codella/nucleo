@@ -28,15 +28,19 @@ public class RoutesHttpVerticle extends AbstractVerticle {
 
   @Override
   public void start(Promise<Void> startPromise) {
-    HttpServer server = vertx.createHttpServer();
+    try {
+      HttpServer server = vertx.createHttpServer();
 
-    routerResources.forEach(Runnable::run);
-    server.requestHandler(router);
+      routerResources.forEach(Runnable::run);
+      server.requestHandler(router);
 
-    server
+      server
         .listen(8081)
         .<Void>mapEmpty()
         .onComplete(startPromise);
+    } catch (Throwable t) {
+      startPromise.fail(t);
+    }
   }
 
 }

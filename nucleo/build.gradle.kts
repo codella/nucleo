@@ -14,7 +14,9 @@ dependencies {
 
     // Flogger
     api(libs.flogger)
-    api(libs.flogger.system.backend)
+    implementation(libs.flogger.slf4j.backend)
+    // Slf4j
+    api(libs.slf4j)
     // Guava
     implementation(libs.guava)
     // Lombok

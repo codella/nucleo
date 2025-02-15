@@ -7,6 +7,7 @@ resteasy = "6.2.11.Final"
 smallrye-config = "3.11.0"
 flogger = "0.8"
 logback = "1.5.16"
+slf4j = "2.0.16"
 junit-jupiter = "5.11.1"
 
 [libraries]
@@ -19,7 +20,8 @@ resteasy-bom = { module = "org.jboss.resteasy:resteasy-bom", version.ref = "rest
 resteasy-vertx = { module = "org.jboss.resteasy:resteasy-vertx" }
 smallrye-config = { module = "io.smallrye.config:smallrye-config", version.ref = "smallrye-config"}
 flogger = { module = "com.google.flogger:flogger", version.ref = "flogger"}
-flogger-system-backend = { module = "com.google.flogger:flogger-system-backend", version.ref = "flogger"}
+flogger-slf4j-backend = { module = "com.google.flogger:flogger-slf4j-backend", version.ref = "flogger" }
+slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
