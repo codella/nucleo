@@ -19,10 +19,10 @@ public class ResteasyHttpVerticle extends AbstractVerticle {
   @Inject
   public ResteasyHttpVerticle(
       Instance<ResteasyResource> resteasyResources,
-      @ConfigProperty(name = "app.http.resteasy-verticle.port", defaultValue = "8081") int port
+      @ConfigProperty(name = "nucleo.http-server.resteasy-verticle.port", defaultValue = "8080") int port
   ) {
-    this.port = port;
     this.resteasyResources = Sets.newHashSet(resteasyResources);
+    this.port = port;
   }
 
   @Override
@@ -34,6 +34,7 @@ public class ResteasyHttpVerticle extends AbstractVerticle {
       deployment.start();
 
       for (var resource : resteasyResources) {
+        // TODO: find a way to use addPerInstanceResource() instead
         deployment.getRegistry().addSingletonResource(resource);
       }
 
