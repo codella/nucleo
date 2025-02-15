@@ -30,14 +30,20 @@ public class ResteasyHttpVerticle extends AbstractVerticle {
     try {
       HttpServer server = vertx.createHttpServer();
 
+      // COMMENTARY:
+      // This initializes and starts the core components of RESTEasy, in a way that is compatible with Vert.x
       VertxResteasyDeployment deployment = new VertxResteasyDeployment();
       deployment.start();
 
+      // COMMENTARY:
+      // This registers the RESTEasy resources in the VertxResteasyDeployment
       for (var resource : resteasyResources) {
         // TODO: find a way to use addPerInstanceResource() instead
         deployment.getRegistry().addSingletonResource(resource);
       }
 
+      // COMMENTARY:
+      // This adapts VertxResteasyDeployment to a Vert.x request handler
       server.requestHandler(new VertxRequestHandler(vertx, deployment));
 
       server

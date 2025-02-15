@@ -24,7 +24,8 @@ public class Nucleo {
     this.weld = new Weld();
     this.weld.disableDiscovery();
     this.weld.addBeanClass(VertxSupport.class);
-    // NOTE: This makes SmallRye Config to work with Weld, and make the @ConfigProperty annotation work as intended
+    // COMMENTARY:
+    // This makes SmallRye Config to work with Weld, and make the @ConfigProperty annotation work as intended
     this.weld.addExtension(new ConfigExtension());
   }
 
@@ -59,9 +60,12 @@ public class Nucleo {
     WeldContainer container = weld.initialize();
     Vertx vertx = container.select(Vertx.class).get();
 
-//    vertx.exceptionHandler(t -> {
-//      log.atSevere().withCause(t).log("BOOM");
-//    });
+    // COMMENTARY:
+    // This registers the default exception handler for exceptions not being caught by the exception handlers
+    // being registered on the Context.
+    vertx.exceptionHandler(t -> {
+      log.atSevere().withCause(t).log("An error occurred");
+    });
 
     if (withRoutesHttpServer) {
       var verticle = container.select(RoutesHttpVerticle.class).get();
