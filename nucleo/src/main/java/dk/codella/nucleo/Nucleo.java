@@ -1,6 +1,7 @@
 package dk.codella.nucleo;
 
 import com.google.common.collect.Sets;
+import io.smallrye.config.inject.ConfigExtension;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
 import lombok.extern.flogger.Flogger;
@@ -25,6 +26,8 @@ public class Nucleo {
     this.weld.disableDiscovery();
     log.atInfo().log("Disabled Weld auto discovery");
     this.weld.addBeanClass(VertxSupport.class);
+    // NOTE: This makes SmallRye Config to work with Weld, and make the @ConfigProperty annotation work as intended
+    this.weld.addExtension(new ConfigExtension());
   }
 
   public Nucleo withBeanClasses(Class<?>... classes) {
