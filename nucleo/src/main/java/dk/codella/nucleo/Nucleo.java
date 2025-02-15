@@ -23,7 +23,6 @@ public class Nucleo {
   public Nucleo() {
     this.weld = new Weld();
     this.weld.disableDiscovery();
-    log.atInfo().log("Disabled Weld auto discovery");
     this.weld.addBeanClass(VertxSupport.class);
     // NOTE: This makes SmallRye Config to work with Weld, and make the @ConfigProperty annotation work as intended
     this.weld.addExtension(new ConfigExtension());
@@ -45,6 +44,8 @@ public class Nucleo {
   }
 
   public void start() {
+    log.atInfo().log("NUCLEO-000: Bootstrap started");
+
     weld.addBeanClasses(beansToAdd.toArray(new Class<?>[0]));
 
     if (withRoutesHttpServer) {
@@ -58,9 +59,9 @@ public class Nucleo {
     WeldContainer container = weld.initialize();
     Vertx vertx = container.select(Vertx.class).get();
 
-    vertx.exceptionHandler(t -> {
-      log.atSevere().withCause(t).log("BOOM");
-    });
+//    vertx.exceptionHandler(t -> {
+//      log.atSevere().withCause(t).log("BOOM");
+//    });
 
     if (withRoutesHttpServer) {
       var verticle = container.select(RoutesHttpVerticle.class).get();
@@ -73,6 +74,8 @@ public class Nucleo {
       vertx.deployVerticle(verticle)
         .onFailure(this::logVerticleDeploymentFailureAndExit);
     }
+
+    log.atInfo().log("NUCLEO-000: Bootstrap completed");
   }
 
   private void logVerticleDeploymentFailureAndExit(Throwable cause) {

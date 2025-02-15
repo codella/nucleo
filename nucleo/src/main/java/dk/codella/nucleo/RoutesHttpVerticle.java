@@ -7,12 +7,9 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 
 import java.util.Set;
 
-// We need @Singleton to make sure exceptions are going to be visible on bean creation
-@Singleton
 public class RoutesHttpVerticle extends AbstractVerticle {
   private final Router router;
   private final Set<HttpRoutesProvider> routerResources;
