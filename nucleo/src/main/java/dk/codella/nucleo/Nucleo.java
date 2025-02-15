@@ -67,6 +67,7 @@ public class Nucleo {
       log.atSevere().withCause(t).log("An unhandled error occurred");
     });
 
+    // TODO: make start() return a Future, which is the combination of the following futures returned by deployVerticle
     if (withRoutesHttpServer) {
       var verticle = container.select(RoutesHttpVerticle.class).get();
       vertx.deployVerticle(verticle)

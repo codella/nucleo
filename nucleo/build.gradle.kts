@@ -40,12 +40,16 @@ dependencies {
     // Lombok
     testCompileOnly(libs.lombok)
     testAnnotationProcessor(libs.lombok)
+    // Vert.x
+    testImplementation(libs.vertx.junit5)
+    // AssertJ
+    // TODO: check if testCompileOnly works as well
+    testImplementation(libs.assertj)
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 
-// Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)

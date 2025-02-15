@@ -9,6 +9,7 @@ flogger = "0.8"
 logback = "1.5.16"
 slf4j = "2.0.16"
 junit-jupiter = "5.11.1"
+assertj = "3.11.1"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
@@ -16,6 +17,7 @@ lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 weld = { module = "org.jboss.weld.se:weld-se-shaded", version.ref = "weld" }
 vertx-core = { module = "io.vertx:vertx-core", version.ref = "vertx" }
 vertx-web = { module = "io.vertx:vertx-web", version.ref = "vertx" }
+vertx-junit5 = { module = "io.vertx:vertx-junit5", version.ref = "vertx" }
 resteasy-bom = { module = "org.jboss.resteasy:resteasy-bom", version.ref = "resteasy" }
 resteasy-vertx = { module = "org.jboss.resteasy:resteasy-vertx" }
 smallrye-config = { module = "io.smallrye.config:smallrye-config", version.ref = "smallrye-config"}
@@ -25,3 +27,4 @@ slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
