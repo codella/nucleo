@@ -2,13 +2,17 @@ package dk.codella.nucleo;
 
 import com.google.common.collect.Sets;
 import io.smallrye.config.inject.ConfigExtension;
+import io.vertx.core.Future;
+import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import lombok.extern.flogger.Flogger;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Flogger
 public class Nucleo {
@@ -44,7 +48,7 @@ public class Nucleo {
     return this;
   }
 
-  public void start() {
+  public Future<String> start() {
     log.atInfo().log("NUCLEO-000: Bootstrap started");
 
     weld.addBeanClasses(beansToAdd.toArray(new Class<?>[0]));
@@ -67,20 +71,29 @@ public class Nucleo {
       log.atSevere().withCause(t).log("An unhandled error occurred");
     });
 
-    // TODO: make start() return a Future, which is the combination of the following futures returned by deployVerticle
+    // TODO: maybe use compose? what's the difference with andThen?
+    return routes(vertx, container)
+        .compose(evt -> resteasy(vertx, container))
+        .andThen(evt -> log.atInfo().log("NUCLEO-000: Bootstrap completed"))
+        .onFailure(this::logVerticleDeploymentFailureAndExit);
+  }
+
+  private Future<String> routes(Vertx vertx, WeldContainer container) {
     if (withRoutesHttpServer) {
       var verticle = container.select(RoutesHttpVerticle.class).get();
-      vertx.deployVerticle(verticle)
-        .onFailure(this::logVerticleDeploymentFailureAndExit);
+      return vertx.deployVerticle(verticle);
+    } else {
+      return Future.succeededFuture();
     }
+  }
 
+  private Future<String> resteasy(Vertx vertx, WeldContainer container) {
     if (withResteasyHttpServer) {
       var verticle = container.select(ResteasyHttpVerticle.class).get();
-      vertx.deployVerticle(verticle)
-        .onFailure(this::logVerticleDeploymentFailureAndExit);
+      return vertx.deployVerticle(verticle);
+    } else {
+      return Future.succeededFuture();
     }
-
-    log.atInfo().log("NUCLEO-000: Bootstrap completed");
   }
 
   private void logVerticleDeploymentFailureAndExit(Throwable cause) {

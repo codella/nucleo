@@ -37,10 +37,8 @@ public class ResteasyHttpVerticle extends AbstractVerticle {
 
       // COMMENTARY:
       // This registers the RESTEasy resources in the VertxResteasyDeployment
-      for (var resource : resteasyResources) {
-        // TODO: find a way to use addPerInstanceResource() instead
-        deployment.getRegistry().addSingletonResource(resource);
-      }
+      // TODO: find a way to use addPerInstanceResource() instead
+      resteasyResources.forEach(resource -> deployment.getRegistry().addSingletonResource(resource));
 
       // COMMENTARY:
       // This adapts VertxResteasyDeployment to a Vert.x request handler

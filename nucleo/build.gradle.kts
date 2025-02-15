@@ -43,8 +43,9 @@ dependencies {
     // Vert.x
     testImplementation(libs.vertx.junit5)
     // AssertJ
-    // TODO: check if testCompileOnly works as well
     testImplementation(libs.assertj)
+    // Logback
+    testImplementation(libs.logback)
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
