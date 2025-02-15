@@ -64,7 +64,7 @@ public class Nucleo {
     // This registers the default exception handler for exceptions not being caught by the exception handlers
     // being registered on the Context.
     vertx.exceptionHandler(t -> {
-      log.atSevere().withCause(t).log("An error occurred");
+      log.atSevere().withCause(t).log("An unhandled error occurred");
     });
 
     if (withRoutesHttpServer) {
