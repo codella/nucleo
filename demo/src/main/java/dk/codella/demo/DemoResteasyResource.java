@@ -10,20 +10,23 @@ import jakarta.ws.rs.Produces;
 import lombok.extern.flogger.Flogger;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+@ApplicationScoped
 @Flogger
 @Path("/resteasy")
-@Singleton
 public class DemoResteasyResource implements ResteasyResource {
 
+  private final String appName;
+
   @Inject
-  @ConfigProperty(name = "app.name")
-  public String appName;
+  public DemoResteasyResource(@ConfigProperty(name = "app.name") String appName) {
+    this.appName = appName;
+  }
 
   @GET
   @Produces("text/plain")
   public String context() {
     log.atInfo().log("request received");
-    return String.format("Hello from a RESTEasy resource in %s !", appName);
+    return String.format("Hello from a RESTEasy resource in %s!", appName);
   }
 
 }
