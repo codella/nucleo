@@ -1,6 +1,7 @@
 package dk.codella.nucleo;
 
 import com.google.common.collect.Sets;
+import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
 import lombok.extern.flogger.Flogger;
 import org.jboss.weld.environment.se.Weld;
@@ -25,7 +26,7 @@ public class Nucleo {
     this.weld.addBeanClass(VertxSupport.class);
   }
 
-  public Nucleo withBeanClasses(Class<?> ...classes) {
+  public Nucleo withBeanClasses(Class<?>... classes) {
     beansToAdd.addAll(Sets.newHashSet(classes));
     return this;
   }
@@ -60,13 +61,19 @@ public class Nucleo {
 
     if (withRoutesHttpServer) {
       var verticle = container.select(RoutesHttpVerticle.class).get();
-      vertx.deployVerticle(verticle);
+      vertx.deployVerticle(verticle)
+        .onFailure(this::logVerticleDeploymentFailure);
     }
 
     if (withResteasyHttpServer) {
       var verticle = container.select(ResteasyHttpVerticle.class).get();
-      vertx.deployVerticle(verticle);
+      vertx.deployVerticle(verticle)
+        .onFailure(this::logVerticleDeploymentFailure);
     }
+  }
+
+  private void logVerticleDeploymentFailure(Throwable cause) {
+    log.atSevere().withCause(cause).log("Verticle deployment failed.");
   }
 
 }

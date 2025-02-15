@@ -29,7 +29,7 @@ dependencies {
     api(platform(libs.resteasy.bom))
     api(libs.resteasy.vertx)
     // SmallRye Config
-    implementation(libs.smallrye.config)
+    api(libs.smallrye.config)
 
     /*********************************************************************************
      * Test

@@ -28,30 +28,26 @@ public class ResteasyHttpVerticle extends AbstractVerticle {
   }
 
   @Override
-  public void start() { //Promise<Void> startPromise
-    throw new RuntimeException("Arca mignotta");
-//startPromise.fail("s'e' rotto.");
-    //    try {
-//      HttpServer server = vertx.createHttpServer();
-//
-//      VertxResteasyDeployment deployment = new VertxResteasyDeployment();
-//      deployment.start();
-//
-//      for (var resource : resteasyResources) {
-//        // TODO: check why exceptions thrown by (or because of) resteasy resources seem to be swallowed
-//        deployment.getRegistry().addPerInstanceResource(TestResource.class);
-//      }
-//
-//      server.requestHandler(new VertxRequestHandler(vertx, deployment));
-//
-//      server
-//          .listen(8080)
-//          .<Void>mapEmpty()
-//          .onComplete(startPromise);
-//    } catch (Throwable t) {
-////      t.printStackTrace();
-//      startPromise.fail(t);
-//    }
+  public void start(Promise<Void> startPromise) {
+    try {
+      HttpServer server = vertx.createHttpServer();
+
+      VertxResteasyDeployment deployment = new VertxResteasyDeployment();
+      deployment.start();
+
+      for (var resource : resteasyResources) {
+        deployment.getRegistry().addSingletonResource(resource);
+      }
+
+      server.requestHandler(new VertxRequestHandler(vertx, deployment));
+
+      server
+        .listen(8080)
+        .<Void>mapEmpty()
+        .onComplete(startPromise);
+    } catch (Throwable t) {
+      startPromise.fail(t);
+    }
   }
 
 }
