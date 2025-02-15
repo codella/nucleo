@@ -54,15 +54,4 @@ public class ResteasyHttpVerticle extends AbstractVerticle {
 //    }
   }
 
-  //@Path("/test")
-  public static class TestResource {
-
-    @GET
-    @Produces("text/plain")
-    public String context() {
-      return "test-resource";
-    }
-
-  }
-
 }
