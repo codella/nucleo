@@ -32,6 +32,8 @@ public class RoutesHttpVerticle extends AbstractVerticle {
     try {
       HttpServer server = vertx.createHttpServer();
 
+      // COMMENTARY:
+      // Running Runnable#run() on the routerResources will make them register routes
       routerResources.forEach(Runnable::run);
       server.requestHandler(router);
 
