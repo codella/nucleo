@@ -10,7 +10,7 @@ import jakarta.inject.Inject;
 @ApplicationScoped
 public class DemoRoutes implements HttpRoutesProvider {
 
-  private Router router;
+  private final Router router;
 
   @Inject
   public DemoRoutes(Router router) {
