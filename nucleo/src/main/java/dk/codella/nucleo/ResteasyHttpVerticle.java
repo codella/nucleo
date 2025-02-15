@@ -50,7 +50,7 @@ public class ResteasyHttpVerticle extends AbstractVerticle {
         .listen(port)
         .<Void>mapEmpty()
         .onComplete(startPromise);
-    } catch (Throwable t) {
+    } catch (Exception t) {
       startPromise.fail(t);
     }
   }
