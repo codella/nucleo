@@ -3,16 +3,13 @@ package dk.codella.nucleo;
 import com.google.common.collect.Sets;
 import io.smallrye.config.inject.ConfigExtension;
 import io.vertx.core.Future;
-import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import lombok.extern.flogger.Flogger;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Flogger
 public class Nucleo {
@@ -71,13 +68,13 @@ public class Nucleo {
       log.atSevere().withCause(t).log("An unhandled error occurred");
     });
 
-    return routes(vertx, container)
-        .compose(e -> resteasy(vertx, container))
+    return deployRoutesHttpVerticleIfEnabled(vertx, container)
+        .compose(e -> deployResteasyHttpVerticleIfEnabled(vertx, container))
         .onSuccess(e -> log.atInfo().log("NUCLEO-001: Bootstrap completed"))
         .onFailure(this::logVerticleDeploymentFailureAndExit);
   }
 
-  private Future<String> routes(Vertx vertx, WeldContainer container) {
+  private Future<String> deployRoutesHttpVerticleIfEnabled(Vertx vertx, WeldContainer container) {
     if (withRoutesHttpServer) {
       var verticle = container.select(RoutesHttpVerticle.class).get();
       return vertx.deployVerticle(verticle);
@@ -86,7 +83,7 @@ public class Nucleo {
     }
   }
 
-  private Future<String> resteasy(Vertx vertx, WeldContainer container) {
+  private Future<String> deployResteasyHttpVerticleIfEnabled(Vertx vertx, WeldContainer container) {
     if (withResteasyHttpServer) {
       var verticle = container.select(ResteasyHttpVerticle.class).get();
       return vertx.deployVerticle(verticle);
