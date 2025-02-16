@@ -71,10 +71,9 @@ public class Nucleo {
       log.atSevere().withCause(t).log("An unhandled error occurred");
     });
 
-    // TODO: maybe use compose? what's the difference with andThen?
     return routes(vertx, container)
-        .compose(evt -> resteasy(vertx, container))
-        .andThen(evt -> log.atInfo().log("NUCLEO-000: Bootstrap completed"))
+        .compose(e -> resteasy(vertx, container))
+        .onSuccess(e -> log.atInfo().log("NUCLEO-001: Bootstrap completed"))
         .onFailure(this::logVerticleDeploymentFailureAndExit);
   }
 
@@ -97,7 +96,7 @@ public class Nucleo {
   }
 
   private void logVerticleDeploymentFailureAndExit(Throwable cause) {
-    log.atSevere().withCause(cause).log("Verticle deployment failed.");
+    log.atSevere().withCause(cause).log("NUCLEO-002: Bootstrap failed");
     System.exit(-1);
   }
 
