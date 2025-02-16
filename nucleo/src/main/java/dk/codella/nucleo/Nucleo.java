@@ -50,6 +50,8 @@ public class Nucleo {
 
     weld.addBeanClasses(beansToAdd.toArray(new Class<?>[0]));
 
+    // COMMENTARY:
+    // Adding verticles to the CDI container as beans, so they can benefit CDI
     if (withRoutesHttpServer) {
       weld.addBeanClass(RoutesHttpVerticle.class);
     }
