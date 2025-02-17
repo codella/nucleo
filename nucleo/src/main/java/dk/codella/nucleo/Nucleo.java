@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import io.smallrye.config.inject.ConfigExtension;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
+import jakarta.ws.rs.Path;
 import lombok.extern.flogger.Flogger;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
@@ -62,6 +63,8 @@ public class Nucleo {
 
     WeldContainer container = weld.initialize();
     Vertx vertx = container.select(Vertx.class).get();
+
+    //container.select(Object.class, new Path());
 
     // COMMENTARY:
     // This registers the default exception handler for exceptions not being caught by the exception handlers
