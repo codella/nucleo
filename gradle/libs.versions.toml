@@ -1,7 +1,7 @@
 [versions]
 guava = "33.3.1-jre"
 lombok = "1.18.36"
-weld = "6.0.0.Final"
+weld = "6.0.1.Final"
 vertx = "4.5.13"
 resteasy = "6.2.11.Final"
 smallrye-config = "3.11.0"

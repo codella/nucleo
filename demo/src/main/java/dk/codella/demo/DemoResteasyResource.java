@@ -1,9 +1,7 @@
 package dk.codella.demo;
 
-import dk.codella.nucleo.ResteasyResource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -13,7 +11,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 @Flogger
 @Path("/resteasy")
-public class DemoResteasyResource implements ResteasyResource {
+public class DemoResteasyResource {
 
   private final String appName;
 

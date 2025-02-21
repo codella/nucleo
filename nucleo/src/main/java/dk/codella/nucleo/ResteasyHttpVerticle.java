@@ -13,12 +13,12 @@ import org.jboss.resteasy.plugins.server.vertx.VertxResteasyDeployment;
 import java.util.Set;
 
 public class ResteasyHttpVerticle extends AbstractVerticle {
-  private final Set<ResteasyResource> resteasyResources;
+  private final Set<Object> resteasyResources;
   private final int port;
 
   @Inject
   public ResteasyHttpVerticle(
-      Instance<ResteasyResource> resteasyResources,
+      @ResteasyResource Instance<Object> resteasyResources,
       @ConfigProperty(name = "nucleo.http-server.resteasy-verticle.port", defaultValue = "8080") int port
   ) {
     this.resteasyResources = Sets.newHashSet(resteasyResources);

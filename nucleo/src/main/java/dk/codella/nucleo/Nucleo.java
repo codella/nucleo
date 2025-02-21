@@ -58,13 +58,12 @@ public class Nucleo {
     }
 
     if (withResteasyHttpServer) {
-      weld.addBeanClasses(ResteasyHttpVerticle.class);
+      weld.addBeanClasses(ResteasyHttpVerticle.class, ResteasyExtension.class);
+      weld.addExtension(new ResteasyExtension());
     }
 
     WeldContainer container = weld.initialize();
     Vertx vertx = container.select(Vertx.class).get();
-
-    //container.select(Object.class, new Path());
 
     // COMMENTARY:
     // This registers the default exception handler for exceptions not being caught by the exception handlers

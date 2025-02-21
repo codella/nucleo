@@ -40,7 +40,7 @@ public class ResteasyHttpVerticleIntegrationTest {
   }
 
   @Path("/test")
-  public static class Resource implements ResteasyResource {
+  public static class Resource {
 
     @GET
     @Produces("text/plain")
