@@ -19,22 +19,22 @@ public class RoutesHttpVerticle extends AbstractVerticle {
   @Inject
   public RoutesHttpVerticle(
       Router router,
-      Instance<HttpRoutesProvider> routerResources,
+      Instance<HttpRoutesProvider> routesProviders,
       @ConfigProperty(name = "nucleo.http-server.routes-verticle.port", defaultValue = "8081") int port
   ) {
     this.router = router;
-    this.routerResources = Sets.newHashSet(routerResources);
+    this.routerResources = Sets.newHashSet(routesProviders);
     this.port = port;
   }
 
   @Override
   public void start(Promise<Void> startPromise) {
     try {
-      HttpServer server = vertx.createHttpServer();
-
       // COMMENTARY:
-      // Running Runnable#run() on the routerResources will make them register routes
-      routerResources.forEach(Runnable::run);
+      // Invoking RoutesProvider#accept(Router) on the routerResources will make them register routes
+      routerResources.forEach(r -> r.accept(router));
+
+      HttpServer server = vertx.createHttpServer();
       server.requestHandler(router);
 
       server

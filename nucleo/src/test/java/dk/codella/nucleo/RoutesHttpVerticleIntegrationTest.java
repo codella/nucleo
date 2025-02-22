@@ -9,10 +9,6 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,15 +41,8 @@ public class RoutesHttpVerticleIntegrationTest {
 
   public static class Resource implements HttpRoutesProvider {
 
-    private final Router router;
-
-    @Inject
-    public Resource(Router router) {
-      this.router = router;
-    }
-
     @Override
-    public void run() {
+    public void accept(Router router) {
       router.get("/test").respond(ctx ->
           Future.succeededFuture(new JsonObject().put("hello", "world"))
       );
