@@ -33,6 +33,15 @@ dependencies {
     // SmallRye Config
     api(libs.smallrye.config)
 
+    // SmallRye Fault Tolerance
+    implementation(libs.smallrye.fault.tolerance.api)
+    implementation(libs.smallrye.fault.tolerance.core)
+    implementation(libs.smallrye.fault.tolerance)
+    implementation(libs.microprofile.fault.tolerance.api)
+    implementation(libs.microprofile.config.api)
+    implementation(libs.smallrye.reactive.converter.api)
+    implementation(libs.jboss.logging)
+
     /*********************************************************************************
      * Test
      */

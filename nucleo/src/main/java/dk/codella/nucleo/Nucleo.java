@@ -2,6 +2,7 @@ package dk.codella.nucleo;
 
 import com.google.common.collect.Sets;
 import io.smallrye.config.inject.ConfigExtension;
+import io.smallrye.faulttolerance.FaultToleranceExtension;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import jakarta.ws.rs.Path;
@@ -50,6 +51,11 @@ public class Nucleo {
     log.atInfo().log("NUCLEO-000: Bootstrap started");
 
     weld.addBeanClasses(beansToAdd.toArray(new Class<?>[0]));
+
+    // COMMENTARY:
+    // Adds the CDI extension needed for SmallRye Fault Tolerance to work
+    weld.addBeanClasses(FaultToleranceExtension.class);
+    weld.addExtension(new FaultToleranceExtension());
 
     // COMMENTARY:
     // Adding verticles to the CDI container as beans, so they can benefit CDI

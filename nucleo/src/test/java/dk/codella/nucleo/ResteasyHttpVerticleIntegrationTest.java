@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ResteasyHttpVerticleIntegrationTest {
 
   @BeforeAll
-  public static void test(VertxTestContext testContext) {
+  public static void beforeAll(VertxTestContext testContext) {
     new Nucleo()
         .withBeanClasses(Resource.class)
         .withResteasyHttpServer()
