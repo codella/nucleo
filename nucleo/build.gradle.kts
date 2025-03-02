@@ -34,6 +34,10 @@ dependencies {
     api(libs.smallrye.config)
 
     // SmallRye Fault Tolerance
+    // COMMENTARY:
+    // Those dependencies are mentioned in the SmallRye Fault Tolerance docs:
+    // - https://smallrye.io/docs/smallrye-fault-tolerance/6.8.0/integration/intro.html
+    // TODO: Enable metrics
     implementation(libs.smallrye.fault.tolerance.api)
     implementation(libs.smallrye.fault.tolerance.core)
     implementation(libs.smallrye.fault.tolerance)
