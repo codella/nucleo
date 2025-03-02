@@ -21,37 +21,39 @@ public class FaultToleranceIntegrationTest {
   @BeforeAll
   public static void beforeAll(VertxTestContext testContext) {
     new Nucleo()
-            .withBeanClasses(X.class, Y.class)
+            .withBeanClasses(Caller.class, SlowComponent.class)
             .start()
             .onComplete(testContext.succeedingThenComplete());
   }
 
+  // COMMENTARY:
+  // This is the only test because it's enough to validate that SmallRye Fault Tolerance is integrated with Weld
   @Test
-  public void test() throws InterruptedException {
-    var x = CDI.current().select(X.class).get();
-    assertThatExceptionOfType(TimeoutException.class).isThrownBy(x::y);
+  public void testTimeout() {
+    var caller = CDI.current().select(Caller.class).get();
+    assertThatExceptionOfType(TimeoutException.class).isThrownBy(caller::callExpensiveComputation);
+  }
+}
+
+@ApplicationScoped
+class Caller {
+  private final SlowComponent slowComponent;
+
+  @Inject
+  public Caller(SlowComponent slowComponent) {
+    this.slowComponent = slowComponent;
   }
 
-  @ApplicationScoped
-  public static class X {
-    private final Y y;
-
-    @Inject
-    public X(Y y) {
-      this.y = y;
-    }
-
-    public void y() throws InterruptedException {
-      y.timeout();
-    }
+  public void callExpensiveComputation() throws InterruptedException {
+    slowComponent.expensiveComputation();
   }
+}
 
-  @ApplicationScoped
-  public static class Y {
+@ApplicationScoped
+class SlowComponent {
 
-    @Timeout(value = 100, unit = ChronoUnit.MILLIS)
-    public void timeout() throws InterruptedException {
-Thread.sleep(20000);
-    }
+  @Timeout(value = 10, unit = ChronoUnit.MILLIS)
+  public void expensiveComputation() throws InterruptedException {
+    Thread.sleep(50);
   }
 }
