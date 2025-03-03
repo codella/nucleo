@@ -92,8 +92,8 @@ class HealthRoute implements HttpRoutesProvider {
     router
             .get("/health")
             .respond(ctx -> {
-              var xxx = reporter.getHealthAsync().subscribeAsCompletionStage();
-              return Future.fromCompletionStage(xxx, Vertx.currentContext());
+              var completableFuture = reporter.getHealthAsync().subscribeAsCompletionStage();
+              return Future.fromCompletionStage(completableFuture, Vertx.currentContext());
             });
   }
 }
