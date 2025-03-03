@@ -12,6 +12,9 @@ microprofile-config-api = "3.1"
 smallrye-reactive-converter-api = "3.0.1"
 jboss-logging = "3.6.1.Final"
 
+smallrye-health = "4.2.0"
+jackson-databind = "2.18.3"
+
 flogger = "0.8"
 logback = "1.5.16"
 slf4j = "2.0.16"
@@ -37,6 +40,9 @@ microprofile-fault-tolerance-api = { module = "org.eclipse.microprofile.fault-to
 microprofile-config-api = { module = "org.eclipse.microprofile.config:microprofile-config-api", version.ref = "microprofile-config-api" }
 smallrye-reactive-converter-api = { module = "io.smallrye.reactive:smallrye-reactive-converter-api", version.ref = "smallrye-reactive-converter-api" }
 jboss-logging = { module = "org.jboss.logging:jboss-logging", version.ref = "jboss-logging" }
+
+smallrye-health = { module = "io.smallrye:smallrye-health", version.ref = "smallrye-health" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-databind" }
 
 flogger = { module = "com.google.flogger:flogger", version.ref = "flogger"}
 flogger-slf4j-backend = { module = "com.google.flogger:flogger-slf4j-backend", version.ref = "flogger" }

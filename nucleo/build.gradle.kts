@@ -46,6 +46,12 @@ dependencies {
     implementation(libs.smallrye.reactive.converter.api)
     implementation(libs.jboss.logging)
 
+    // SmallRye Health
+    implementation(libs.smallrye.health)
+    // COMMENTARY:
+    // Needed to render response payloads, like SmallRyeHealth
+    implementation(libs.jackson.databind)
+
     /*********************************************************************************
      * Test
      */
