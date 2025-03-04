@@ -7,6 +7,7 @@ import jakarta.enterprise.inject.spi.CDI;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.eclipse.microprofile.faulttolerance.exceptions.TimeoutException;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,12 +19,20 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @ExtendWith(VertxExtension.class)
 public class FaultToleranceIntegrationTest {
 
+  private static Nucleo nucleo;
+
   @BeforeAll
   public static void beforeAll(VertxTestContext testContext) {
-    new Nucleo()
-            .withBeanClasses(Caller.class, SlowComponent.class)
-            .start()
-            .onComplete(testContext.succeedingThenComplete());
+    nucleo = new Nucleo();
+    nucleo
+        .withBeanClasses(Caller.class, SlowComponent.class)
+        .start()
+        .onComplete(testContext.succeedingThenComplete());
+  }
+
+  @AfterAll
+  public static void afterAll() {
+    nucleo.shutdown();
   }
 
   // COMMENTARY:

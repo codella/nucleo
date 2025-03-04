@@ -22,7 +22,6 @@ public class Nucleo {
 
   // BEGIN -- Builder properties
   private final Set<Class<?>> beansToAdd = new HashSet<>();
-  private boolean withRoutesHttpServer = false;
   private boolean withResteasyHttpServer = false;
   // END -- Builder properties
 
@@ -34,11 +33,6 @@ public class Nucleo {
 
   public Nucleo withBeanClasses(Class<?>... classes) {
     beansToAdd.addAll(Sets.newHashSet(classes));
-    return this;
-  }
-
-  public Nucleo withRoutesHttpServer() {
-    withRoutesHttpServer = true;
     return this;
   }
 
@@ -65,10 +59,8 @@ public class Nucleo {
     weld.addBeanClasses(SmallRyeHealthReporter.class, AsyncHealthCheckFactory.class);
 
     // COMMENTARY:
-    // Adding verticles to the CDI container as beans, so they can benefit CDI
-    if (withRoutesHttpServer) {
-      weld.addBeanClass(RoutesHttpVerticle.class);
-    }
+    // Adds the Health verticle in the container
+    weld.addBeanClasses(HealthVerticle.class);
 
     if (withResteasyHttpServer) {
       weld.addBeanClasses(ResteasyHttpVerticle.class);
@@ -85,7 +77,7 @@ public class Nucleo {
       log.atSevere().withCause(t).log("An unhandled error occurred");
     });
 
-    return deployRoutesHttpVerticleIfEnabled(vertx, container)
+    return deployHealthVerticle(vertx, container)
         .compose(e -> deployResteasyHttpVerticleIfEnabled(vertx, container))
         .onSuccess(e -> log.atInfo().log("NUCLEO-001: Bootstrap completed"))
         .onFailure(this::logVerticleDeploymentFailureAndExit);
@@ -107,13 +99,9 @@ public class Nucleo {
     return promise.future();
   }
 
-  private Future<String> deployRoutesHttpVerticleIfEnabled(Vertx vertx, WeldContainer container) {
-    if (withRoutesHttpServer) {
-      var verticle = container.select(RoutesHttpVerticle.class).get();
-      return vertx.deployVerticle(verticle);
-    } else {
-      return Future.succeededFuture();
-    }
+  private Future<String> deployHealthVerticle(Vertx vertx, WeldContainer container) {
+    var verticle = container.select(HealthVerticle.class).get();
+    return vertx.deployVerticle(verticle);
   }
 
   private Future<String> deployResteasyHttpVerticleIfEnabled(Vertx vertx, WeldContainer container) {

@@ -11,7 +11,6 @@ public class Demo {
 
         new Nucleo()
             .withBeanClasses(DemoRoutes.class, DemoResteasyResource.class)
-            .withRoutesHttpServer()
             .withResteasyHttpServer()
             .start();
     }

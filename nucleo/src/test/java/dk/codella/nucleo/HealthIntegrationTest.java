@@ -21,6 +21,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.util.function.Consumer;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(VertxExtension.class)
@@ -32,8 +34,7 @@ public class HealthIntegrationTest {
   @BeforeAll
   public static void beforeAll(VertxTestContext testContext) {
     nucleo = new Nucleo();
-    nucleo.withBeanClasses(HealthRoute.class, MyCheck.class)
-            .withRoutesHttpServer()
+    nucleo.withBeanClasses(MyCheck.class)
             .start()
             .onComplete(testContext.succeedingThenComplete());
   }
@@ -50,7 +51,7 @@ public class HealthIntegrationTest {
     var body = testContext.checkpoint();
     var status = testContext.checkpoint();
 
-    client.request(HttpMethod.GET, 8081, "127.0.0.1", "/health")
+    client.request(HttpMethod.GET, 3030, "127.0.0.1", "/liveness")
             .compose(HttpClientRequest::send)
             .onComplete(testContext.succeeding(response -> testContext
                     .verify(() -> {
@@ -73,26 +74,5 @@ class MyCheck implements HealthCheck {
 
   public HealthCheckResponse call() {
     return HealthCheckResponse.up("successful-check");
-  }
-}
-
-@ApplicationScoped
-class HealthRoute implements HttpRoutesProvider {
-
-  private final SmallRyeHealthReporter reporter;
-
-  @Inject
-  public HealthRoute(SmallRyeHealthReporter reporter) {
-    this.reporter = reporter;
-  }
-
-  @Override
-  public void accept(Router router) {
-    router
-            .get("/health")
-            .respond(ctx -> {
-              var completableFuture = reporter.getHealthAsync().subscribeAsCompletionStage();
-              return Future.fromCompletionStage(completableFuture, Vertx.currentContext());
-            });
   }
 }
