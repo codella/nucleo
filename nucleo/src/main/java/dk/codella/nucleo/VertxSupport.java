@@ -14,10 +14,4 @@ public class VertxSupport {
   public Vertx vertx() {
     return Vertx.vertx();
   }
-
-  @Produces
-  @Singleton
-  public Router router(Vertx vertx) {
-    return Router.router(vertx);
-  }
 }
