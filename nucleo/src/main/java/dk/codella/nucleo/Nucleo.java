@@ -29,9 +29,6 @@ public class Nucleo {
     this.weld = new Weld();
     this.weld.disableDiscovery();
     this.weld.addBeanClass(VertxSupport.class);
-    // COMMENTARY:
-    // This makes SmallRye Config to work with Weld, and make the @ConfigProperty annotation work as intended
-    this.weld.addExtension(new ConfigExtension());
   }
 
   public Nucleo withBeanClasses(Class<?>... classes) {
@@ -53,6 +50,10 @@ public class Nucleo {
     log.atInfo().log("NUCLEO-000: Bootstrap started");
 
     weld.addBeanClasses(beansToAdd.toArray(new Class<?>[0]));
+
+    // COMMENTARY:
+    // This makes SmallRye Config to work with Weld, and make the @ConfigProperty annotation work as intended
+    this.weld.addExtension(new ConfigExtension());
 
     // COMMENTARY:
     // Adds the CDI extension needed for SmallRye Fault Tolerance to work
