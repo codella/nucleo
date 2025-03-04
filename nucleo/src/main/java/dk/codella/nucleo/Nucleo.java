@@ -6,6 +6,7 @@ import io.smallrye.faulttolerance.FaultToleranceExtension;
 import io.smallrye.health.AsyncHealthCheckFactory;
 import io.smallrye.health.SmallRyeHealthReporter;
 import io.vertx.core.Future;
+import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import lombok.extern.flogger.Flogger;
 import org.jboss.weld.environment.se.Weld;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Flogger
 public class Nucleo {
   private final Weld weld;
+  private Vertx vertx;
 
   // BEGIN -- Builder properties
   private final Set<Class<?>> beansToAdd = new HashSet<>();
@@ -74,7 +76,7 @@ public class Nucleo {
     }
 
     WeldContainer container = weld.initialize();
-    Vertx vertx = container.select(Vertx.class).get();
+    vertx = container.select(Vertx.class).get();
 
     // COMMENTARY:
     // This registers the default exception handler for exceptions not being caught by the exception handlers
@@ -87,6 +89,22 @@ public class Nucleo {
         .compose(e -> deployResteasyHttpVerticleIfEnabled(vertx, container))
         .onSuccess(e -> log.atInfo().log("NUCLEO-001: Bootstrap completed"))
         .onFailure(this::logVerticleDeploymentFailureAndExit);
+  }
+
+  public Future<Void> shutdown() {
+    Promise<Void> promise = Promise.promise();
+    // TODO: also Weld must shutdown + other components if needed
+    if (vertx != null) {
+      vertx.close(ar -> {
+        if (ar.succeeded()) {
+          promise.complete();
+        } else {
+          promise.fail(ar.cause());
+        }
+      });
+    }
+
+    return promise.future();
   }
 
   private Future<String> deployRoutesHttpVerticleIfEnabled(Vertx vertx, WeldContainer container) {

@@ -16,6 +16,7 @@ import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.Liveness;
 import org.eclipse.microprofile.health.Readiness;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,15 +26,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(VertxExtension.class)
 public class HealthIntegrationTest {
 
+  private static Nucleo nucleo;
   public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
   @BeforeAll
   public static void beforeAll(VertxTestContext testContext) {
-    new Nucleo()
-            .withBeanClasses(HealthRoute.class, MyCheck.class)
+    nucleo = new Nucleo();
+    nucleo.withBeanClasses(HealthRoute.class, MyCheck.class)
             .withRoutesHttpServer()
             .start()
             .onComplete(testContext.succeedingThenComplete());
+  }
+
+  @AfterAll
+  public static void afterAll() {
+    nucleo.shutdown();
   }
 
   @Test

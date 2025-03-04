@@ -9,6 +9,7 @@ import io.vertx.junit5.VertxTestContext;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,13 +19,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(VertxExtension.class)
 public class ResteasyHttpVerticleIntegrationTest {
 
+  private static Nucleo nucleo;
+
   @BeforeAll
   public static void beforeAll(VertxTestContext testContext) {
-    new Nucleo()
+    nucleo = new Nucleo();
+    nucleo
         .withBeanClasses(Resource.class)
         .withResteasyHttpServer()
         .start()
         .onComplete(testContext.succeedingThenComplete());
+  }
+
+  @AfterAll
+  public static void afterAll() {
+    nucleo.shutdown();
   }
 
   @Test
