@@ -69,7 +69,6 @@ public class HealthIntegrationTest {
 
 @ApplicationScoped
 @Liveness
-@Readiness
 class MyCheck implements HealthCheck {
 
   public HealthCheckResponse call() {
