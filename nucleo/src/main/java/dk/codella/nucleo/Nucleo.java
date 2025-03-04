@@ -7,7 +7,6 @@ import io.smallrye.health.AsyncHealthCheckFactory;
 import io.smallrye.health.SmallRyeHealthReporter;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
-import jakarta.ws.rs.Path;
 import lombok.extern.flogger.Flogger;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
@@ -53,11 +52,10 @@ public class Nucleo {
 
     // COMMENTARY:
     // This makes SmallRye Config to work with Weld, and make the @ConfigProperty annotation work as intended
-    this.weld.addExtension(new ConfigExtension());
+    weld.addExtension(new ConfigExtension());
 
     // COMMENTARY:
     // Adds the CDI extension needed for SmallRye Fault Tolerance to work
-    weld.addBeanClasses(FaultToleranceExtension.class);
     weld.addExtension(new FaultToleranceExtension());
 
     // COMMENTARY:
@@ -71,7 +69,7 @@ public class Nucleo {
     }
 
     if (withResteasyHttpServer) {
-      weld.addBeanClasses(ResteasyHttpVerticle.class, ResteasyExtension.class);
+      weld.addBeanClasses(ResteasyHttpVerticle.class);
       weld.addExtension(new ResteasyExtension());
     }
 
