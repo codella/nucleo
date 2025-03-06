@@ -10,7 +10,7 @@ public class Demo {
         log.atInfo().log("PID: %s", ProcessHandle.current().pid());
 
         new Nucleo()
-            .withBeanClasses(DemoRoutes.class, DemoResteasyResource.class)
+            .withBeanClasses(DemoResteasyResource.class)
             .withResteasyHttpServer()
             .start();
     }
