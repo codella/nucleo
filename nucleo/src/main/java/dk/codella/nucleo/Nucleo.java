@@ -1,17 +1,22 @@
 package dk.codella.nucleo;
 
-import com.google.common.collect.Sets;
 import io.smallrye.config.inject.ConfigExtension;
 import io.smallrye.faulttolerance.FaultToleranceExtension;
 import io.smallrye.health.AsyncHealthCheckFactory;
 import io.smallrye.health.SmallRyeHealthReporter;
-import io.vertx.core.*;
+import io.vertx.core.Future;
+import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
+import io.vertx.core.impl.VertxImpl;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
+import jakarta.enterprise.inject.spi.BeanManager;
+import jakarta.enterprise.inject.spi.Extension;
+import jakarta.inject.Singleton;
 import lombok.extern.flogger.Flogger;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -25,20 +30,19 @@ public class Nucleo {
   // END -- Builder properties
 
   public Nucleo() {
+    this(Vertx::vertx);
+  }
+
+  public Nucleo(Supplier<Vertx> vertxSupplier) {
     this.weld = new Weld();
     this.weld.disableDiscovery();
-    this.weld.addBeanClass(VertxSupport.class);
+    this.weld.addExtension(new VertxExtension(vertxSupplier));
   }
 
   public Nucleo withWeld(Consumer<Weld> callback) {
     callback.accept(weld);
     return this;
   }
-//
-//  public Nucleo withVerticle(Supplier<Verticle> verticleSupplier, DeploymentOptions options) {
-//
-//    return this;
-//  }
 
   public Nucleo withResteasyHttpServer() {
     withResteasyHttpServer = true;
