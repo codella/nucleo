@@ -7,18 +7,11 @@ import io.smallrye.health.SmallRyeHealthReporter;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
-import io.vertx.core.impl.VertxImpl;
-import jakarta.enterprise.event.Observes;
-import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
-import jakarta.enterprise.inject.spi.BeanManager;
-import jakarta.enterprise.inject.spi.Extension;
-import jakarta.inject.Singleton;
 import lombok.extern.flogger.Flogger;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 @Flogger
 public class Nucleo {
@@ -30,13 +23,13 @@ public class Nucleo {
   // END -- Builder properties
 
   public Nucleo() {
-    this(Vertx::vertx);
+    this(Vertx.vertx());
   }
 
-  public Nucleo(Supplier<Vertx> vertxSupplier) {
+  public Nucleo(Vertx vertx) {
     this.weld = new Weld();
     this.weld.disableDiscovery();
-    this.weld.addExtension(new VertxExtension(vertxSupplier));
+    this.weld.addExtension(new VertxExtension(vertx));
   }
 
   public Nucleo withWeld(Consumer<Weld> callback) {
