@@ -25,7 +25,7 @@ public class FaultToleranceIntegrationTest {
   public static void beforeAll(VertxTestContext testContext) {
     nucleo = new Nucleo();
     nucleo
-        .withBeanClasses(Caller.class, SlowComponent.class)
+        .withWeld(weld -> weld.addBeanClasses(Caller.class, SlowComponent.class))
         .start()
         .onComplete(testContext.succeedingThenComplete());
   }

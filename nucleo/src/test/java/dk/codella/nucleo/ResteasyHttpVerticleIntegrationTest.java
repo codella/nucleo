@@ -25,7 +25,7 @@ public class ResteasyHttpVerticleIntegrationTest {
   public static void beforeAll(VertxTestContext testContext) {
     nucleo = new Nucleo();
     nucleo
-        .withBeanClasses(Resource.class)
+        .withWeld(weld -> weld.addBeanClass(Resource.class))
         .withResteasyHttpServer()
         .start()
         .onComplete(testContext.succeedingThenComplete());

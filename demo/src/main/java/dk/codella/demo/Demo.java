@@ -10,7 +10,7 @@ public class Demo {
         log.atInfo().log("PID: %s", ProcessHandle.current().pid());
 
         new Nucleo()
-            .withBeanClasses(DemoResteasyResource.class)
+            .withWeld(weld -> weld.addBeanClass(DemoResteasyResource.class))
             .withResteasyHttpServer()
             .start();
     }

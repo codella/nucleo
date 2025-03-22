@@ -5,15 +5,15 @@ import io.smallrye.config.inject.ConfigExtension;
 import io.smallrye.faulttolerance.FaultToleranceExtension;
 import io.smallrye.health.AsyncHealthCheckFactory;
 import io.smallrye.health.SmallRyeHealthReporter;
-import io.vertx.core.Future;
-import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
+import io.vertx.core.*;
 import lombok.extern.flogger.Flogger;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Flogger
 public class Nucleo {
@@ -21,7 +21,6 @@ public class Nucleo {
   private Vertx vertx;
 
   // BEGIN -- Builder properties
-  private final Set<Class<?>> beansToAdd = new HashSet<>();
   private boolean withResteasyHttpServer = false;
   // END -- Builder properties
 
@@ -31,10 +30,15 @@ public class Nucleo {
     this.weld.addBeanClass(VertxSupport.class);
   }
 
-  public Nucleo withBeanClasses(Class<?>... classes) {
-    beansToAdd.addAll(Sets.newHashSet(classes));
+  public Nucleo withWeld(Consumer<Weld> callback) {
+    callback.accept(weld);
     return this;
   }
+//
+//  public Nucleo withVerticle(Supplier<Verticle> verticleSupplier, DeploymentOptions options) {
+//
+//    return this;
+//  }
 
   public Nucleo withResteasyHttpServer() {
     withResteasyHttpServer = true;
@@ -43,8 +47,6 @@ public class Nucleo {
 
   public Future<String> start() {
     log.atInfo().log("NUCLEO-000: Bootstrap started");
-
-    weld.addBeanClasses(beansToAdd.toArray(new Class<?>[0]));
 
     // COMMENTARY:
     // This makes SmallRye Config to work with Weld, and make the @ConfigProperty annotation work as intended

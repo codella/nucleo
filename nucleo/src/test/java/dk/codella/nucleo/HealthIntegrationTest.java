@@ -34,7 +34,7 @@ public class HealthIntegrationTest {
   @BeforeAll
   public static void beforeAll(VertxTestContext testContext) {
     nucleo = new Nucleo();
-    nucleo.withBeanClasses(MyCheck.class)
+    nucleo.withWeld(weld -> weld.addBeanClass(MyCheck.class))
             .start()
             .onComplete(testContext.succeedingThenComplete());
   }
