@@ -17,6 +17,7 @@ public class VertxExtension implements Extension {
   }
 
   void afterBeanDiscovery(@Observes AfterBeanDiscovery event) {
+    // REF: https://arjan-tijms.omnifaces.org/2017/08/dynamic-beans-in-cdi.html
     event.addBean()
         .scope(Singleton.class)
         .types(Vertx.class)
