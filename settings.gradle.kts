@@ -11,4 +11,3 @@ plugins {
 }
 
 rootProject.name = "nucleo"
-include("nucleo", "demo")
