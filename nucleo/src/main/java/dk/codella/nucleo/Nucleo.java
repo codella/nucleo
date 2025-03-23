@@ -4,13 +4,13 @@ import io.smallrye.config.inject.ConfigExtension;
 import io.smallrye.faulttolerance.FaultToleranceExtension;
 import io.smallrye.health.AsyncHealthCheckFactory;
 import io.smallrye.health.SmallRyeHealthReporter;
-import io.vertx.core.Future;
-import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
+import io.vertx.core.*;
 import lombok.extern.flogger.Flogger;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 @Flogger
@@ -20,6 +20,7 @@ public class Nucleo {
 
   // BEGIN -- Builder properties
   private boolean withResteasyHttpServer = false;
+  private final Map<Class<?>, DeploymentOptions> verticles = new HashMap<>();
   // END -- Builder properties
 
   public Nucleo() {
@@ -34,6 +35,11 @@ public class Nucleo {
 
   public Nucleo withWeld(Consumer<Weld> callback) {
     callback.accept(weld);
+    return this;
+  }
+
+  public Nucleo withVerticleBeanClass(Class<?> verticle, DeploymentOptions options) {
+    verticles.put(verticle, options);
     return this;
   }
 
@@ -66,6 +72,10 @@ public class Nucleo {
       weld.addExtension(new ResteasyExtension());
     }
 
+    // COMMENTARY:
+    // Adding custom verticles as beans so they can benefit from all the features provided by Nucleo
+    verticles.keySet().forEach(weld::addBeanClass);
+
     WeldContainer container = weld.initialize();
     vertx = container.select(Vertx.class).get();
 
@@ -78,13 +88,14 @@ public class Nucleo {
 
     return deployHealthVerticle(vertx, container)
         .compose(e -> deployResteasyHttpVerticleIfEnabled(vertx, container))
+        .compose(e -> deployVerticles(vertx, container))
         .onSuccess(e -> log.atInfo().log("NUCLEO-001: Bootstrap completed"))
         .onFailure(this::logVerticleDeploymentFailureAndExit);
   }
 
   public Future<Void> shutdown() {
     Promise<Void> promise = Promise.promise();
-    // TODO: also Weld must shutdown + other components if needed
+    // TODO: also Weld must shutdown + other components (SmallRye-* and such) if needed
     if (vertx != null) {
       vertx.close(ar -> {
         if (ar.succeeded()) {
@@ -110,6 +121,15 @@ public class Nucleo {
     } else {
       return Future.succeededFuture();
     }
+  }
+
+  private Future<String> deployVerticles(Vertx vertx, WeldContainer container) {
+    var all = verticles.keySet().stream()
+        .map(verticle -> vertx.deployVerticle(container.select(verticle.getClass()).get(), verticles.get(verticle)))
+        .toList();
+
+    return Future.succeededFuture();
+    //return Future.all(all).compose(e -> Future.succeededFuture("bogus"));
   }
 
   private void logVerticleDeploymentFailureAndExit(Throwable cause) {
