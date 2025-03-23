@@ -20,7 +20,7 @@ public class Nucleo {
 
   // BEGIN -- Builder properties
   private boolean withResteasyHttpServer = false;
-  private final Map<Class<?>, DeploymentOptions> verticles = new HashMap<>();
+  private final Map<Class<? extends Verticle>, DeploymentOptions> verticles = new HashMap<>();
   // END -- Builder properties
 
   public Nucleo() {
@@ -38,7 +38,7 @@ public class Nucleo {
     return this;
   }
 
-  public Nucleo withVerticleBeanClass(Class<?> verticle, DeploymentOptions options) {
+  public Nucleo withVerticleBeanClass(Class<? extends Verticle> verticle, DeploymentOptions options) {
     verticles.put(verticle, options);
     return this;
   }
@@ -125,11 +125,12 @@ public class Nucleo {
 
   private Future<String> deployVerticles(Vertx vertx, WeldContainer container) {
     var all = verticles.keySet().stream()
-        .map(verticle -> vertx.deployVerticle(container.select(verticle.getClass()).get(), verticles.get(verticle)))
+        .map(verticle -> vertx.
+            deployVerticle(container.select(verticle).get(), verticles.get(verticle))
+        )
         .toList();
 
-    return Future.succeededFuture();
-    //return Future.all(all).compose(e -> Future.succeededFuture("bogus"));
+    return Future.all(all).compose(e -> Future.succeededFuture("CHANGE ME"));
   }
 
   private void logVerticleDeploymentFailureAndExit(Throwable cause) {
