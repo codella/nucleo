@@ -22,10 +22,10 @@ public class HttpRoutesIntegrationTest {
   private static Nucleo nucleo;
 
   @BeforeAll
-  public static void beforeAll(Vertx vertx, VertxTestContext testContext) {
+  public static void beforeAll(VertxTestContext testContext) {
     nucleo = new Nucleo();
     nucleo
-        .withVerticleBeanClass(HttpRoutesVerticle.class, new DeploymentOptions())
+        .withVerticleBeanClass(HttpRoutesVerticle.class)
         .start()
         .onComplete(testContext.succeedingThenComplete());
   }
@@ -36,7 +36,7 @@ public class HttpRoutesIntegrationTest {
   }
 
   @Test
-  public void testResteasyResourceRespondsHttp200(Vertx vertx, VertxTestContext testContext) {
+  public void testRouteRespondsHttp200(Vertx vertx, VertxTestContext testContext) {
     HttpClient client = vertx.createHttpClient();
 
     client.request(HttpMethod.GET, 8080, "127.0.0.1", "/test")

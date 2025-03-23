@@ -38,6 +38,11 @@ public class Nucleo {
     return this;
   }
 
+  public Nucleo withVerticleBeanClass(Class<? extends Verticle> verticle) {
+    withVerticleBeanClass(verticle, new DeploymentOptions());
+    return this;
+  }
+
   public Nucleo withVerticleBeanClass(Class<? extends Verticle> verticle, DeploymentOptions options) {
     verticles.put(verticle, options);
     return this;
@@ -76,7 +81,7 @@ public class Nucleo {
     // Adding custom verticles as beans so they can benefit from all the features provided by Nucleo
     verticles.keySet().forEach(weld::addBeanClass);
 
-    WeldContainer container = weld.initialize();
+    final WeldContainer container = weld.initialize();
     vertx = container.select(Vertx.class).get();
 
     // COMMENTARY:

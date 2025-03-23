@@ -26,7 +26,7 @@ dependencies {
     api(libs.weld)
     // Vert.x
     api(libs.vertx.core)
-    api(libs.vertx.web)
+    implementation(libs.vertx.web)
     // RESTEasy
     api(platform(libs.resteasy.bom))
     api(libs.resteasy.vertx)

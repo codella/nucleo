@@ -11,12 +11,20 @@ dependencies {
     implementation(project(":nucleo"))
     // Logback
     implementation(libs.logback)
+    // Vertx Dependencies
+    implementation(libs.vertx.mysql)
     // Lombok
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    // Testcontainers
+//    testImplementation(libs.testcontainers.junit.jupiter)
+//    testImplementation(libs.testcontainers.mysql)
+//    // Vertx Dependencies
+//    testImplementation(libs.vertx.mysql)
+//    testImplementation("com.mysql:mysql-connector-j:9.2.0")
 }
 
 java {

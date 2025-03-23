@@ -10,7 +10,11 @@ public class Demo {
         log.atInfo().log("PID: %s", ProcessHandle.current().pid());
 
         new Nucleo()
-            .withWeld(weld -> weld.addBeanClass(DemoResteasyResource.class))
+            .withWeld(weld -> weld.addBeanClasses(
+                DemoResteasyResource.class,
+                DemoMysqlClient.class,
+                DemoMysqlClientConfig.class
+            ))
             .withResteasyHttpServer()
             .start();
     }
