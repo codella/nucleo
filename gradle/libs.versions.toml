@@ -22,6 +22,9 @@ junit-jupiter = "5.11.1"
 assertj = "3.11.1"
 testcontainers = "1.20.6"
 
+# Demo Only
+mysql-connector-j = "9.2.0"
+
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
@@ -53,8 +56,9 @@ logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
-testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
-testcontainers-mysql = { module = "org.testcontainers:mysql", version.ref = "testcontainers" }
 
 # Demo Only
+testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
+testcontainers-mysql = { module = "org.testcontainers:mysql", version.ref = "testcontainers" }
 vertx-mysql = { module = "io.vertx:vertx-mysql-client", version.ref = "vertx" }
+mysql-connector-j = { module = "com.mysql:mysql-connector-j", version.ref = "mysql-connector-j" }

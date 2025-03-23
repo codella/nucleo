@@ -20,11 +20,11 @@ dependencies {
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     // Testcontainers
-//    testImplementation(libs.testcontainers.junit.jupiter)
-//    testImplementation(libs.testcontainers.mysql)
+    testImplementation(libs.testcontainers.junit.jupiter)
+    testImplementation(libs.testcontainers.mysql)
 //    // Vertx Dependencies
-//    testImplementation(libs.vertx.mysql)
-//    testImplementation("com.mysql:mysql-connector-j:9.2.0")
+    testImplementation(libs.vertx.mysql)
+    testImplementation(libs.mysql.connector.j)
 }
 
 java {
