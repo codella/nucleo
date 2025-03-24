@@ -17,13 +17,16 @@ public class DemoResteasyResource {
 
   private final String appName;
   private final SqlClient sqlClient;
+  private final DemoResteasyClient client;
 
   @Inject
   public DemoResteasyResource(
       @ConfigProperty(name = "app.name") String appName,
-      SqlClient sqlClient) {
+      SqlClient sqlClient,
+      DemoResteasyClient client) {
     this.appName = appName;
     this.sqlClient = sqlClient;
+    this.client = client;
   }
 
   @GET
@@ -45,6 +48,14 @@ public class DemoResteasyResource {
         .map(SqlResult::size)
         .map(Object::toString)
         .toCompletionStage();
+  }
+
+  @GET
+  @Produces("text/plain")
+  @Path("/resteasy-client")
+  public String rc() {
+    log.atInfo().log("request received");
+    return String.format("Hello from a RESTEasy resource in %s!", appName);
   }
 
 }

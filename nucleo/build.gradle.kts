@@ -30,6 +30,8 @@ dependencies {
     // RESTEasy
     api(platform(libs.resteasy.bom))
     api(libs.resteasy.vertx)
+    api("org.jboss.resteasy:resteasy-client-api")
+    api("org.eclipse.microprofile.rest.client:microprofile-rest-client-api:4.0")
     // SmallRye Config
     api(libs.smallrye.config)
 
