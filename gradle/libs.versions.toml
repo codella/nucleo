@@ -20,6 +20,8 @@ logback = "1.5.16"
 slf4j = "2.0.16"
 junit-jupiter = "5.11.1"
 assertj = "3.11.1"
+weld-junit5 = "5.0.0.Final"
+wiremock = "3.12.1"
 
 # Demo Only
 testcontainers = "1.20.6"
@@ -55,6 +57,8 @@ slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+weld-junit5 = { module = "org.jboss.weld:weld-junit5", version.ref = "weld-junit5" }
+wiremock = { module = "org.wiremock:wiremock", version.ref = "wiremock" }
 assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 
 # Demo Only

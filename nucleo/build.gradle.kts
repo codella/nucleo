@@ -30,6 +30,7 @@ dependencies {
     // RESTEasy
     api(platform(libs.resteasy.bom))
     api(libs.resteasy.vertx)
+    // api(libs.resteasy.cdi)
     api("org.jboss.resteasy:resteasy-client-api")
     api("org.eclipse.microprofile.rest.client:microprofile-rest-client-api:4.0")
     // SmallRye Config
@@ -70,6 +71,8 @@ dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
+    testImplementation(libs.weld.junit5)
+    testImplementation(libs.wiremock)
 }
 
 java {
