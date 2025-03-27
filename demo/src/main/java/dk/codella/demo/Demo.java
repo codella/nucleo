@@ -13,7 +13,8 @@ public class Demo {
             .withWeld(weld -> weld.addBeanClasses(
                 DemoResteasyResource.class,
                 DemoMysqlClient.class,
-                DemoMysqlClientConfig.class
+                DemoMysqlClientConfig.class,
+                DemoResteasyClient.class
             ))
             .withResteasyHttpServer()
             .start();
