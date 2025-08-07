@@ -32,6 +32,8 @@ dependencies {
     api(libs.resteasy.vertx)
     // api(libs.resteasy.cdi)
     api("org.jboss.resteasy:resteasy-client-api")
+    // RestEasy client implementation
+    api("org.jboss.resteasy:resteasy-client")
     api("org.eclipse.microprofile.rest.client:microprofile-rest-client-api:4.0")
     // SmallRye Config
     api(libs.smallrye.config)
@@ -54,6 +56,11 @@ dependencies {
     // COMMENTARY:
     // Needed to render response payloads, like SmallRyeHealth
     implementation(libs.jackson.databind)
+
+    // SmallRye Reactive Messaging
+    // COMMENTARY:
+    // Core reactive messaging provider (includes MicroProfile API)
+    implementation(libs.smallrye.reactive.messaging)
 
     /*********************************************************************************
      * Test

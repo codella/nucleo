@@ -13,6 +13,8 @@ dependencies {
     implementation(libs.logback)
     // Vertx Dependencies
     implementation(libs.vertx.mysql)
+    // SmallRye In-Memory Connector for demo
+    implementation("io.smallrye.reactive:smallrye-reactive-messaging-in-memory:4.28.0")
     // Lombok
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)

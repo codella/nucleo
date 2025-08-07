@@ -14,7 +14,8 @@ public class Demo {
                 DemoResteasyResource.class,
                 DemoMysqlClient.class,
                 DemoMysqlClientConfig.class,
-                DemoResteasyClient.class
+                DemoResteasyClient.class,
+                DemoMessageProcessor.class
             ))
             .withResteasyHttpServer()
             .start();
